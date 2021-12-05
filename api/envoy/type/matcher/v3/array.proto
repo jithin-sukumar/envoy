@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package envoy.type.matcher.v3;
+
+import "udpa/annotations/status.proto";
+import "validate/validate.proto";
+
+option java_package = "io.envoyproxy.envoy.type.matcher";
+option java_outer_classname = "ArrayProto";
+option java_multiple_files = true;
+option go_package = "github.com/envoyproxy/go-control-plane/envoy/type/matcher";
+option (udpa.annotations.file_status).package_version_status = FROZEN;
+
+// [#protodoc-title: Array matcher]
+
+// Specifies the way to match a double value.
+message ArrayMatcher {
+  repeated string match_values = 1;
+}

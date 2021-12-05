@@ -29,7 +29,8 @@ public:
     Prefix,
     Suffix,
     Contains,
-    StringMatch
+    StringMatch,
+    ArrayMatch
   };
 
   /**
@@ -78,6 +79,7 @@ public:
     Matchers::StringMatcherPtr string_match_;
     const bool invert_match_;
     bool present_;
+    Matchers::StringMatcherPtr array_match_;
 
     // HeaderMatcher
     bool matchesHeaders(const HeaderMap& headers) const override {
