@@ -85,6 +85,19 @@ public:
   bool match(absl::string_view) const override { return true; }
 };
 
+class ArrayMatcherImpl: public StringMatcher {
+private:
+  std::vector<std::string> values_;
+public:
+  ArrayMatcherImpl(const Protobuf::RepeatedPtrField<std::string>& values_) {
+    this->values_ = std::vector<std::string>(values_.begin(), values_.end());
+  }
+public:
+  bool match(const absl::string_view value) const override {
+    return !(std::find(std::begin(this->values_), std::end(this->values_), value)->empty());
+  }
+};
+
 template <class StringMatcherType = envoy::type::matcher::v3::StringMatcher>
 class StringMatcherImpl : public ValueMatcher, public StringMatcher {
 public:

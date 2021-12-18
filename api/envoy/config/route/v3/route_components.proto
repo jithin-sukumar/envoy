@@ -5,6 +5,7 @@ package envoy.config.route.v3;
 import "envoy/config/core/v3/base.proto";
 import "envoy/config/core/v3/extension.proto";
 import "envoy/config/core/v3/proxy_protocol.proto";
+import "envoy/type/matcher/v3/array.proto";
 import "envoy/type/matcher/v3/metadata.proto";
 import "envoy/type/matcher/v3/regex.proto";
 import "envoy/type/matcher/v3/string.proto";
@@ -2046,6 +2047,8 @@ message HeaderMatcher {
 
     // If specified, header match will be performed based on the string match of the header value.
     type.matcher.v3.StringMatcher string_match = 13;
+
+    type.matcher.v3.ArrayMatcher array_match = 14;
   }
 
   // If specified, the match result will be inverted before checking. Defaults to false.

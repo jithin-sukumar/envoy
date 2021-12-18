@@ -706,6 +706,27 @@ string_match:
   EXPECT_FALSE(HeaderUtility::matchHeaders(unmatching_headers, header_data));
 }
 
+TEST(MatchHeadersTest, HeaderArrayMatch) {
+TestRequestHeaderMapImpl matching_headers{{"match-header", "correct-value-1"},
+                                          {"match-header", "correct-value-2"}};
+TestRequestHeaderMapImpl unmatching_headers{{"match-header", "incorrect-value-1"},
+                                            {"other-header", "correct-value-1"}};
+const std::string yaml = R"EOF(
+name: match-header
+array_match:
+  match_values:
+    - correct-value-1
+    - correct-value-2
+    - correct-value-3
+  )EOF";
+
+std::vector<HeaderUtility::HeaderDataPtr> header_data;
+header_data.push_back(
+        std::make_unique<HeaderUtility::HeaderData>(parseHeaderMatcherFromYaml(yaml)));
+EXPECT_TRUE(HeaderUtility::matchHeaders(matching_headers, header_data));
+EXPECT_FALSE(HeaderUtility::matchHeaders(unmatching_headers, header_data));
+}
+
 TEST(MatchHeadersTest, HeaderStringMatchIgnoreCase) {
   TestRequestHeaderMapImpl matching_headers_1{{"match-header", "123onevalue456"}};
   TestRequestHeaderMapImpl matching_headers_2{{"match-header", "123OneValue456"}};

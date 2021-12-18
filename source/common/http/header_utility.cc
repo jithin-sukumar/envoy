@@ -73,6 +73,10 @@ HeaderUtility::HeaderData::HeaderData(const envoy::config::route::v3::HeaderMatc
         std::make_unique<Matchers::StringMatcherImpl<envoy::type::matcher::v3::StringMatcher>>(
             config.string_match());
     break;
+  case envoy::config::route::v3::HeaderMatcher::HeaderMatchSpecifierCase::kArrayMatch:
+     header_match_type_ = HeaderMatchType::ArrayMatch;
+     array_match_ = std::unique_ptr<Matchers::ArrayMatcherImpl>(new Matchers::ArrayMatcherImpl(config.array_match().match_values()));
+     break;
   case envoy::config::route::v3::HeaderMatcher::HeaderMatchSpecifierCase::
       HEADER_MATCH_SPECIFIER_NOT_SET:
     FALLTHRU;
@@ -175,6 +179,9 @@ bool HeaderUtility::matchHeaders(const HeaderMap& request_headers, const HeaderD
     break;
   case HeaderMatchType::StringMatch:
     match = header_data.string_match_->match(value);
+    break;
+  case HeaderMatchType::ArrayMatch:
+    match = header_data.array_match_->match(value);
     break;
   default:
     NOT_REACHED_GCOVR_EXCL_LINE;
